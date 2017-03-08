@@ -23,7 +23,7 @@ public class SearchDAO {
         	pst.setString(2, (to.getYear()+1900)+"-"+(to.getMonth()+1)+"-"+to.getDate());
         	rs = (ResultSet) pst.executeQuery();
 	        while(rs.next()){
-	        	System.out.println("HIT");
+	        	//System.out.println("HIT");
 	        	Purchase obj = new Purchase();
 	        	obj.setId(rs.getInt(1));
 	        	obj.setEntryDate(rs.getDate(2));
