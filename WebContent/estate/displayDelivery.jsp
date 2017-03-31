@@ -1,4 +1,4 @@
-<%@page import="com.Purchase"%>
+<%@page import="com.Delivery"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -31,37 +31,29 @@ td {
 <table style="border: 1px; border-color:black;border-top-style: solid;">
 <thead style="border: 1px; border-color:black;border-top-style: solid;">
 <th>ID</th>
+<th>Asset</th>
+<th>Delivered To</th>
 <th>Date of Entry</th>
-<th>Approval Date</th>
-<th>Approved Quantity</th>
-<th>Purchase Quantity</th>
-<th>Unit Cost</th>
-<th>Specification</th>
-<th>Supplier Details</th>
-<th>Bill No</th>
-<th>Bill Date</th>
-<th>CSR No</th>
-<th>Asset Type</th>
+<th>Issue Date</th>
+<th>Issue Quantity</th>
+<th>Requisition Number</th>
+<th>CSR Number</th>
 <th>Remarks</th>
 </thead>
 <%
-ArrayList<Purchase> p = (ArrayList<Purchase>)request.getAttribute("listPurchase");
-for(Purchase pu : p){
+ArrayList<Delivery> d = (ArrayList<Delivery>)request.getAttribute("listDelivery");
+for(Delivery dl : d){
 	%>
 	<tr>
-	<td><%=pu.getId() %></td>
-	<td><%=pu.getEntryDate() %></td>
-	<td><%=pu.getApprovalDate() %></td>
-	<td><%=pu.getApprovedQuantity() %></td>
-	<td><%=pu.getPurchaseQuantity() %></td>
-	<td><%=pu.getUnitCost() %></td>
-	<td><%=pu.getSpecification() %></td>
-	<td><%=pu.getSupplierDetails() %></td>
-	<td><%=pu.getBillNo() %></td>
-	<td><%=pu.getBillDate() %></td>
-	<td><%=pu.getCSRNo() %></td>
-	<td></td>
-	<td><%=pu.getRemarks() %></td>
+	<td><%=dl.getId() %></td>
+	<td><%=dl.getAsset().getAssetName() %></td>
+	<td><%=dl.getDl().getDlName() %></td>
+	<td><%=dl.getEntryDate() %></td>
+	<td><%=dl.getIssueDate() %></td>
+	<td><%=dl.getIssueQuantity() %></td>
+	<td><%=dl.getRequisitionNumber() %></td>
+	<td><%=dl.getCSRNumer() %></td>
+	<td><%=dl.getRemarks() %></td>
 	</tr>
 	<%
 }

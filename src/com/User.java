@@ -4,8 +4,14 @@ import java.util.Date;
 
 public class User {
 	private int id;
-	private String name,password,createdBy;
+	private String name,password,createdBy,fullName;
 	private Date lastAccess,lastUpdate;
+	public String getFullName(){
+		return fullName;
+	}
+	public void setFullName(String name){
+		fullName = name;
+	}
 	public int getId() {
 		return id;
 	}
