@@ -1,3 +1,4 @@
+<%@page import="java.util.UUID"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -17,7 +18,7 @@
 	Password: 
 	<input id="pwd" name="pwd" type="password" required="required"/>
 	<br>
-	<% 
+	<%
 		String errmsg = (String)request.getSession().getAttribute("errorMessage");
 		request.getSession().removeAttribute("errorMessage");
 		String successMsg = (String)request.getSession().getAttribute("successMessage");

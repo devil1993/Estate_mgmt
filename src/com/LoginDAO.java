@@ -1,9 +1,11 @@
 package com;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 public class LoginDAO {
 
@@ -51,24 +53,28 @@ public class LoginDAO {
 		return user;
 	}
 
-	public static boolean resetPasseord(String userName, String password) throws ClassNotFoundException, SQLException {
+	public static void resetPasseord(String userName, String password) throws ClassNotFoundException, SQLException, ApplicationException {
 		Connection conn = null;
-		PreparedStatement pst = null;
-		ResultSet rs;
-		User user = null;
+		CallableStatement callableStatement = null;
+		System.out.println(userName+" "+password);
 		try{
 			conn = ConnectionManager.getConnection();
-	        
-			String query = "UPDATE ESTATE_USERS SET USR_PASSWORD = ? WHERE USR_ID = (SELECT USR_ID FROM ESTATE_USERS WHERE USR_NAME = ?)";
-        	pst = conn.prepareStatement(query);
-        	pst.setString(1, password);
-        	pst.setString(2, userName);
-        	boolean success = pst.execute();	
-	        return success;
+			String query = "{call ResetPassword(?,?,?)}";
+        	callableStatement = conn.prepareCall(query);
+        	callableStatement.setString(1, userName);
+        	callableStatement.setString(2, password);
+        	callableStatement.registerOutParameter(3, java.sql.Types.INTEGER);
+        	
+        	callableStatement.executeUpdate();
+        	int res = callableStatement.getInt(3);
+        	System.out.println(res);
+        	if(res <= 0){
+        		throw new ApplicationException("Unable to reset password.");
+        	}
 		}
 		finally {
 			try {
-		 		   pst.close();
+		 		   callableStatement.close();
 		 		   conn.close();
 		 	   } 
 		 	   catch (SQLException e) {
@@ -92,8 +98,8 @@ public class LoginDAO {
         	pst.setString(2, fullName);
         	pst.setString(3, password);
         	pst.setString(4, name);
-        	boolean success = pst.execute();	
-	        return success;
+        	int success = pst.executeUpdate();	
+	        return success==1;
 		}
 		finally {
 			try {

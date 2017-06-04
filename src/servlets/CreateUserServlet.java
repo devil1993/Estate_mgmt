@@ -40,6 +40,7 @@ public class CreateUserServlet extends HttpServlet {
 		System.out.println(fullName+userName+password+me.getFullName());
 		try {
 			boolean success = LoginDAO.createUser(fullName,userName,password,me.getName());
+			System.out.println(success);
 			if(!success){
 				throw new ApplicationException("Unable to add new user");
 			}

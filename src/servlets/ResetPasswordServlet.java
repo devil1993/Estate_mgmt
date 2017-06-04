@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -30,28 +31,25 @@ public class ResetPasswordServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		if(! RequestValidator.validate(request)){
-			request.getSession().setAttribute("errorMessage", "Please log in.");
-			response.sendRedirect("../index.jsp");
-			return;
-		}
-		String userName = (String)request.getAttribute("uname");
-		String password = (String)request.getAttribute("pwd");
-		
 		try {
-			boolean success = LoginDAO.resetPasseord(userName,password);
-			if(!success){
-				throw new ApplicationException("Unable to reset password");
+			if(! RequestValidator.validate(request)){
+				request.getSession().setAttribute("errorMessage", "Please log in.");
+				response.sendRedirect("index.jsp");
+				return;
 			}
-			else{
+			String userName = (String)request.getParameter("uname");
+			String password = (String)request.getParameter("pwd");
+			System.out.println(userName+ " "+password);
+			try {
+				LoginDAO.resetPasseord(userName,password);
 				request.getSession().setAttribute("successMessage", "Password reset.");
 				response.sendRedirect("estate/userManagement.jsp");
+			} catch (ApplicationException e) {
+				request.getSession().setAttribute("errorMessage", e.getMessage());
+				response.sendRedirect("estate/userManagement.jsp");
 			}
-		} catch (ApplicationException e) {
-			request.getSession().setAttribute("errorMessage", e.getMessage());
-			response.sendRedirect("estate/userManagement.jsp");
-		}
-		catch(Exception e){
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
